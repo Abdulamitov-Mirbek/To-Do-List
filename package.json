@@ -4,17 +4,18 @@
   "description": "REST API для To-Do List приложения",
   "main": "server.js",
   "scripts": {
-    "postinstall": "prisma generate",
+    "postinstall": "npx prisma generate",
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate": "npx prisma migrate dev",
     "prisma:seed": "node prisma/seed.js",
-    "prisma:studio": "prisma studio",
+    "prisma:studio": "npx prisma studio",
     "test": "echo \"Тесты будут добавлены\" && exit 0"
   },
   "dependencies": {
     "@prisma/client": "^5.7.0",
+    "prisma": "^5.7.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -27,10 +28,8 @@
   "devDependencies": {
     "nodemon": "^3.0.2",
     "prisma": "^5.7.0"
-    
   },
   "prisma": {
-  "seed": "node prisma/seed.js"
-}
-  
+    "seed": "node prisma/seed.js"
+  }
 }
