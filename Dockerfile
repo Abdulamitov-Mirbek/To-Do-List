@@ -1,19 +1,18 @@
-FROM node:18
+FROM node:18-slim
 
-# Установка OpenSSL для Prisma
-RUN apt-get update && apt-get install -y openssl libssl-dev
+# Установка OpenSSL и прав
+RUN apt-get update -y && apt-get install -y openssl && chmod -R 777 /usr/local/lib/node_modules
 
 WORKDIR /app
 
 COPY package*.json ./
 COPY prisma ./prisma/
 
-RUN npm ci
-RUN npx prisma generate
+RUN npm install --production=false
+RUN node ./node_modules/prisma/build/index.js generate
 
 COPY . .
 
-EXPOSE 3000
-
+EXPOSE 10000
 
 CMD ["node", "server.js"]
