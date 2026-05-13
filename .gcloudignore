@@ -1,0 +1,9 @@
+# This file specifies files that are not uploaded to Google Cloud
+node_modules/
+npm-debug.log
+.env
+.git
+.gitignore
+.vscode/
+test-*.ps1
+*.md
