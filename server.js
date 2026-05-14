@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const swaggerUi = require('swagger-ui-express');
+const openapiSpec = require('./swagger/openapi.json');
 require('dotenv').config();
 
 const app = express();
@@ -13,7 +15,18 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        'style-src': ["'self'", "'unsafe-inline'"],
+        'script-src': ["'self'", "'unsafe-inline'"],
+        'img-src': ["'self'", 'data:', 'https:'],
+      },
+    },
+  })
+);
 app.use(morgan('combined'));
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '10kb' }));
@@ -28,12 +41,29 @@ app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/user', userRoutes);
 
+app.get('/api/docs/openapi.json', (req, res) => {
+  res.json(openapiSpec);
+});
+
+app.use(
+  '/api/docs',
+  swaggerUi.serve,
+  swaggerUi.setup(openapiSpec, {
+    customSiteTitle: 'To-Do List API — Swagger',
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  })
+);
+
 // Root endpoint
 app.get('/', (req, res) => {
   res.json({
     name: 'To-Do List API',
     version: '1.0.0',
     status: 'running',
+    swagger: '/api/docs',
+    openapiJson: '/api/docs/openapi.json',
     endpoints: {
       register: 'POST /api/auth/register',
       login: 'POST /api/auth/login',
