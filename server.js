@@ -10,7 +10,7 @@ const app = express();
 
 // Настройка CORS для публичного API
 const corsOptions = {
-  origin: "*", // Разрешает запросы с любых сайтов и фронтендов
+  origin: "*",
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));

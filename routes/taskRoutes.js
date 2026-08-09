@@ -3,10 +3,6 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const taskController = require("../controllers/taskController");
 
-// Проверяем, что контроллер и middleware корректны
-console.log("Task controller methods:", Object.keys(taskController));
-console.log("Auth middleware type:", typeof auth);
-
 // Все маршруты задач требуют аутентификации
 router.use(auth);
 
