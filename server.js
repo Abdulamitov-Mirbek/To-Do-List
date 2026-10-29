@@ -53,12 +53,6 @@ app.use(
     swaggerOptions: {
       persistAuthorization: true,
     },
-  }),
-);
-
-// Root endpoint
-app.get("/", (req, res) => {
-  res.json({
     name: "To-Do List API",
     version: "1.0.0",
     status: "running",
@@ -72,8 +66,8 @@ app.get("/", (req, res) => {
       createTask: "POST /api/tasks",
       profile: "GET /api/user/profile",
     },
-  });
-});
+  }),
+);
 
 // Health check
 app.get("/health", (req, res) => {
