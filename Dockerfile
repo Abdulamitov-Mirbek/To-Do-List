@@ -15,4 +15,4 @@ COPY . .
 
 EXPOSE 10000
 
-CMD ["node", "server.js"]
+CMD ["sh", "-c", "node ./node_modules/prisma/build/index.js migrate deploy && node server.js"]

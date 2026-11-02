@@ -4,6 +4,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const swaggerUi = require("swagger-ui-express");
 const openapiSpec = require("./swagger/openapi.json");
+const prisma = require("./config/database");
 require("dotenv").config();
 
 const app = express();
@@ -70,11 +71,30 @@ app.use(
 );
 
 // Health check
-app.get("/health", (req, res) => {
-  res.json({
-    status: "OK",
+app.get("/health", async (req, res) => {
+  let database = "OK";
+  try {
+    await prisma.user.count();
+  } catch (error) {
+    console.error("Health DB check failed:", error);
+    database = "ERROR";
+  }
+
+  res.status(database === "OK" ? 200 : 503).json({
+    status: database === "OK" ? "OK" : "DEGRADED",
+    database,
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
+  });
+});
+
+app.get("/", (req, res) => {
+  res.json({
+    name: "To-Do List API",
+    status: "running",
+    docs: "/api/docs",
+    openapi: "/api/docs/openapi.json",
+    health: "/health",
   });
 });
 
